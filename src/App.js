@@ -7,6 +7,7 @@ import Login from "./components/Login"
 import Profile from "./components/Profile";
 import AuthService from "./services/auth.service"
 import Course from "./components/Course";
+import PostCourse from "./components/PostCourse";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser())
@@ -20,6 +21,7 @@ function App() {
         <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser}/>} />
         <Route path="/profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         <Route path="/course" element={<Course currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+        <Route path="/postCourse" element={<PostCourse currentUser={currentUser} setCurrentUser={setCurrentUser}/>}/>
         <Route
           path="*"
           element={

@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const Nav = ({ currentUser, setCurrentUser }) => {
+  const navigate = useNavigate()
   const handleLogout = () => {
     AuthService.logout();
     window.alert("Logout Successfully, redirect to the homepage now.");
     setCurrentUser(null);
+    navigate("/")
   };
 
   return (
@@ -36,7 +38,7 @@ const Nav = ({ currentUser, setCurrentUser }) => {
               {currentUser && (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/" onClick={handleLogout}>
+                    <Link className="nav-link" to="" onClick={handleLogout}>
                       Logout
                     </Link>
                   </li>
@@ -52,6 +54,15 @@ const Nav = ({ currentUser, setCurrentUser }) => {
                   </li>
                 </>
               )}
+              {
+                currentUser && currentUser.user.role === "instructor" && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/postCourse">
+                      Post Course
+                    </Link>
+                  </li>
+                ) 
+              }
             </ul>
           </div>
         </div>
