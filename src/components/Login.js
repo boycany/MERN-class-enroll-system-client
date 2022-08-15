@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import AuthService from "../services/auth.service";
 
-const Login = () => {
+const Login = ({currentUser, setCurrentUser}) => {
   const navigate = useNavigate();
   
   let [email, setEmail] = useState("");
@@ -24,6 +24,8 @@ const Login = () => {
         if(response.data.token){
             localStorage.setItem("user", JSON.stringify(response.data))
         }
+        window.alert("Login successfully.")
+        setCurrentUser(AuthService.getCurrentUser())
         navigate("/profile")
     }).catch(err=>{
         console.log(err.response);
