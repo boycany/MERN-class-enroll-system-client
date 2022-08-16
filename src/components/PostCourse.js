@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import courseService from "../services/course.service"
+import LoginReminder from "./LoginReminder"
 
 const PostCourse = ({ currentUser, setCurrentUser }) => {
     const [title, setTitle] = useState("")
@@ -23,15 +24,7 @@ const PostCourse = ({ currentUser, setCurrentUser }) => {
         <div style={{ padding: "3rem" }}>
             {
                 !currentUser && (
-                    <div>
-                        <p>You must login before posting a new course.</p>
-                        <button 
-                            onClick={()=> navigate("/login")}
-                            className="btn btn-secondary btn-md"
-                        >
-                                Take me to login page 
-                        </button>
-                    </div>
+                   <LoginReminder navigate={navigate} note={"posting a new course"}/>
                 )
             }
             {

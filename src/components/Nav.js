@@ -63,6 +63,15 @@ const Nav = ({ currentUser, setCurrentUser }) => {
                   </li>
                 ) 
               }
+              {
+                currentUser && currentUser.user.role === "student" && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/enroll">
+                      Enroll
+                    </Link>
+                  </li>
+                )
+              }
             </ul>
           </div>
         </div>

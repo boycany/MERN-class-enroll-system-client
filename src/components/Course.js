@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import courseService from "../services/course.service"
+import LoginReminder from "./LoginReminder"
 
 const Course = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate()
@@ -14,33 +15,45 @@ const Course = ({ currentUser, setCurrentUser }) => {
         }else{
             _id = ""
         }
-        courseService.get(_id).then(response=>{
-            console.log('response :>> ', response.data);
-            setCourseData(response.data)
-        }).catch(err=>{
-            console.log(err);
-        })
+
+        if(currentUser.user.role === "instructor"){
+            courseService
+            .get(_id)
+            .then(response=>{
+                setCourseData(response.data)
+            }).catch(err=>{
+                console.log(err);
+            })
+        }else if(currentUser.user.role === "student"){
+            courseService
+            .getEnrolledCourses(_id)
+            .then(response=>{
+                console.log("enroll response: >> ", response);
+                setCourseData(response.data)
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
     }, [])
     
     return (
         <div style={{ padding: "3rem" }}>
             {
                 !currentUser && (
-                    <div>
-                        <h3>You must login before seeing your courses</h3>
-                        <button 
-                            onClick={()=> navigate("/login")}
-                            className="btn btn-secondary btn-md"
-                        >
-                                Take me to login page 
-                        </button>
-                    </div>   
+                    <LoginReminder navigate={navigate} note={"seeing your courses."}/>
                 ) 
             }
             {
                 currentUser && currentUser.user.role === "instructor" && (
                     <div>
                         <h1>Instructor's Course Page</h1>
+                    </div>
+                )
+            }
+            {
+                currentUser && currentUser.user.role === "student" && (
+                    <div>
+                        <h1>Student's Course Page</h1>
                     </div>
                 )
             }
@@ -65,13 +78,7 @@ const Course = ({ currentUser, setCurrentUser }) => {
                     </div>
                 )
             }
-            {
-                currentUser && currentUser.user.role === "student" && (
-                    <div>
-                        <h1>Student's Course Page</h1>
-                    </div>
-                )
-            }
+           
         </div>
     )
 }
